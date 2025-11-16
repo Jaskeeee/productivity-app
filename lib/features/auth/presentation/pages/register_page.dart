@@ -57,6 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     if(value==null || value.isEmpty){
                       return 'Name cannot be empty';
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 15,),
