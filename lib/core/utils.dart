@@ -1,0 +1,1 @@
+final String googleLogo =  "assets/logo/google_logo.png";
