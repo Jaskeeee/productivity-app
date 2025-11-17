@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productivity_app/core/components/google_sign_in_button.dart';
 import 'package:productivity_app/core/components/section_divider.dart';
 import 'package:productivity_app/features/auth/presentation/components/auth_buttons.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';
+import 'package:productivity_app/features/auth/presentation/cubit/auth_cubit.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function() toggleLogin;
@@ -36,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal:25),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 25,),
@@ -47,7 +50,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 15,),
+                SizedBox(height: 5,),
+                Text(
+                  "Let's get your started right away!",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 16
+                  ),
+                ),
+                SizedBox(height: 30,),
                 InputTextField(
                   hintText: "Name", 
                   controller:namecontroller, 
@@ -128,13 +139,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 25,),
                 AuthButtons(
-                  onPressed: ()=>_formKey.currentState!.validate(), 
+                  onPressed: (){
+                    if(_formKey.currentState!.validate()){
+                      final authCubit = context.read<AuthCubit>();
+
+                      final String name = namecontroller.text;
+                      final String email = emailcontroller.text;
+                      final String passwd = passcontroller.text;
+                      
+                      authCubit.registerNewUser(name, email, passwd);
+                    }
+                  }, 
                   text: "Register"
                 ),
                 SizedBox(height:25),
                 SectionDivider(),
                 SizedBox(height: 25),
-                GoogleSignInButton(),
+                GoogleSignInButton(
+                  onPressed: () => context.read<AuthCubit>().googleSignIn(),
+                ),
                 SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

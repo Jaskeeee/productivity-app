@@ -4,7 +4,7 @@ import 'package:productivity_app/core/app.dart';
 import 'package:productivity_app/core/firebase/firebase_options.dart';
 
 void main() async {
-  Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform);
   runApp(App());
 }

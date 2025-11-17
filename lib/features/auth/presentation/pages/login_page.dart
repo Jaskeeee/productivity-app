@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productivity_app/core/components/google_sign_in_button.dart';
 import 'package:productivity_app/core/components/section_divider.dart';
 import 'package:productivity_app/features/auth/presentation/components/auth_buttons.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';
+import 'package:productivity_app/features/auth/presentation/cubit/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function() toggleLogin;
@@ -16,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passcontroller = TextEditingController();
@@ -50,7 +53,15 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 5,),
+                Text(
+                  "Welcome back! we're so glad you're here",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 16
+                  ),
+                ),
+                SizedBox(height: 30),
                 InputTextField(
                   hintText: "Email", 
                   controller: emailcontroller,
@@ -96,13 +107,22 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height:25,),
                 AuthButtons(
-                  onPressed:()=>_formKey.currentState!.validate(),
+                  onPressed:(){
+                    final authCubit = context.read<AuthCubit>();
+                    if(_formKey.currentState!.validate()){
+                      final String email = emailcontroller.text;
+                      final String passwd = passcontroller.text;
+                      authCubit.signIn(email, passwd);
+                    }
+                  },
                   text: "Login",
                 ),
                 SizedBox(height:25),
                 SectionDivider(),
                 SizedBox(height: 25),
-                GoogleSignInButton(),
+                GoogleSignInButton(
+                  onPressed: ()=>context.read<AuthCubit>().googleSignIn(),
+                ),
                 SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
