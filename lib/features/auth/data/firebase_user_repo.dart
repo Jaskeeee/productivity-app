@@ -1,8 +1,7 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:productivity_app/core/utils.dart';
 import 'package:productivity_app/features/auth/domain/app_user.dart';
 import 'package:productivity_app/features/auth/domain/repo/app_user_repo.dart';
 
@@ -10,11 +9,14 @@ class FirebaseUserRepo implements AppUserRepo{
   final _firebaseauth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final _googleSignin = GoogleSignIn.instance;
+  final String? googleServerClientId = dotenv.get("SERVER_CLIENT_ID");
   bool isInit = false;
   
   Future<void> _ensureGoogleInit()async{
     try{
-      await _googleSignin.initialize();
+      await _googleSignin.initialize(
+        serverClientId: googleServerClientId
+      );
       isInit = true;
     }
     catch(e){
@@ -33,7 +35,7 @@ class FirebaseUserRepo implements AppUserRepo{
       if(currUser!=null){
         return AppUser(
           uid: currUser.uid, 
-          name: currUser.displayName!, 
+          name: currUser.displayName ?? "User", 
           email: currUser.email!,
         );
       }else{
@@ -53,7 +55,7 @@ class FirebaseUserRepo implements AppUserRepo{
       );
       final AppUser appUser = AppUser(
         uid: userCreds.user!.uid, 
-        name: userCreds.user!.displayName!, 
+        name: userCreds.user!.displayName ?? "User", 
         email: userCreds.user!.email!
       );
       return appUser;
@@ -94,9 +96,10 @@ class FirebaseUserRepo implements AppUserRepo{
         await _ensureGoogleInit();
       }
       final GoogleSignInAccount appUser = await _googleSignin.authenticate(
-        scopeHint: ['email']
+        scopeHint: ['email'],
       );
       final authClient = _googleSignin.authorizationClient;
+      
       final authorization = await authClient.authorizationForScopes(['emails']);
       final GoogleSignInAuthentication googleSignInAuthentication = appUser.authentication;
       final CollectionReference userCollection = _firestore.collection("users");

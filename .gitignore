@@ -257,3 +257,6 @@ firebase_options.dart
 firebase.json
 .flutter-plugins-dependencies
 firebase/
+
+#environment variables
+.env
