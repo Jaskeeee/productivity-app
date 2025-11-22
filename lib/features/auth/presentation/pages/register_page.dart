@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 25,),
+                  SizedBox(height:50),
                   Text(
                     "Register Now",
                     style: TextStyle(
@@ -61,6 +61,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 30,),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Name",
                     hintText: "Name", 
                     controller:namecontroller, 
                     obscureText: false, 
@@ -74,6 +77,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 15,),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Email",
                     hintText: "Email", 
                     controller: emailcontroller,
                     obscureText: false,
@@ -90,6 +96,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 15,),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Password",
                     hintText: "Password", 
                     controller: passcontroller,
                     obscureText: isObscure,
@@ -118,6 +127,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 15,),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Confirm Password",
                     hintText: "Confirm Password", 
                     controller: confpasscontroller,
                     obscureText: isConfObscure,
@@ -153,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }, 
                     text: "Register"
                   ),
-                  SizedBox(height:25),
+                  SizedBox(height:30),
                   SectionDivider(),
                   SizedBox(height: 25),
                   GoogleSignInButton(

@@ -16,7 +16,7 @@ class FirebaseTaskRepo implements TaskRepo{
       }).toList();
      });
     }catch(e){
-      throw Exception("Failed to Fetch Categories");
+      throw Exception("Failed to Fetch Categories : $e");
     }
   }
   @override

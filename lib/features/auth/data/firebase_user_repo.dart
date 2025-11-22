@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:productivity_app/features/auth/domain/app_user.dart';
+import 'package:productivity_app/features/auth/domain/model/app_user.dart';
 import 'package:productivity_app/features/auth/domain/repo/app_user_repo.dart';
 
 class FirebaseUserRepo implements AppUserRepo{

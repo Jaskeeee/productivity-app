@@ -1,64 +1,45 @@
 import 'package:flutter/material.dart';
 
-class InputTextField extends StatefulWidget {
-
-  final String hintText;
+class CategoryNoteTextfield extends StatefulWidget {
   final TextEditingController controller;
-  final bool obscureText;
-  final IconData prefixIconData;
-  final IconData? suffixIconData;
   final String label;
-  final Color borderColor;
-  final Color invertedBorderColor;
-  final void Function()? toggleVisibility;
   final String? Function(String?)? validator;
-  const InputTextField({
+  final IconData prefixIconData;
+  final String hintText;
+  final Color borderColor;
+  final Color labelColor;
+  final Color invertedBorderColor;
+  const CategoryNoteTextfield({
     super.key,
-    required this.hintText,
     required this.controller,
-    required this.obscureText,
+    required this.hintText,
     required this.prefixIconData,
     required this.label,
     required this.borderColor,
     required this.invertedBorderColor,
-    this.validator,
-    this.suffixIconData,
-    this.toggleVisibility,
+    required this.labelColor,
+    this.validator
   });
 
   @override
-  State<InputTextField> createState() => _InputTextFieldState();
+  State<CategoryNoteTextfield> createState() => _CategoryNoteTextfieldState();
 }
 
-class _InputTextFieldState extends State<InputTextField> {
+class _CategoryNoteTextfieldState extends State<CategoryNoteTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.obscureText,
+      maxLines: 5,
       controller: widget.controller,
       validator: widget.validator,
       decoration: InputDecoration(
         labelText: widget.label,
+        alignLabelWithHint: true,
         labelStyle: TextStyle(
-          color: widget.borderColor,
+          color: widget.labelColor
         ),
         contentPadding: EdgeInsets.fromLTRB(10,20,25,20),
         hintText: widget.hintText,
-        prefixIcon: Icon(
-          widget.prefixIconData,
-          color: widget.borderColor,
-          size: 20,
-        ),
-        suffixIcon:widget.suffixIconData!=null
-        ?IconButton(
-          onPressed:widget.toggleVisibility, 
-          icon:Icon(
-            widget.suffixIconData,
-            color: widget.borderColor,
-            size: 20,
-          )
-        )
-        :null,
         hintStyle: TextStyle(
           color:widget.borderColor
         ),
@@ -73,9 +54,9 @@ class _InputTextFieldState extends State<InputTextField> {
         focusedBorder: OutlineInputBorder( // focused border
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(
-            color: widget.invertedBorderColor,
+            color: widget.borderColor,
             style: BorderStyle.solid,
-            width: 1
+            width: 2
           )
         ),
         focusedErrorBorder: OutlineInputBorder( // focused error border

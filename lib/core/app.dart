@@ -6,11 +6,17 @@ import 'package:productivity_app/features/auth/data/firebase_user_repo.dart';
 import 'package:productivity_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:productivity_app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:productivity_app/features/auth/presentation/pages/auth_page.dart';
+import 'package:productivity_app/features/home/data/firebase_category_repo.dart';
+import 'package:productivity_app/features/home/data/firebase_task_repo.dart';
+import 'package:productivity_app/features/home/presentation/bloc/cubit/category_cubit.dart';
+import 'package:productivity_app/features/home/presentation/bloc/cubit/task_cubit.dart';
 import 'package:productivity_app/features/home/presentation/pages/home_page.dart';
 
 class App extends StatelessWidget {
   final GlobalKey<ScaffoldMessengerState> rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final FirebaseUserRepo firebaseUserRepo = FirebaseUserRepo();
+  final FirebaseCategoryRepo firebaseCategoryRepo = FirebaseCategoryRepo();
+  final FirebaseTaskRepo firebaseTaskRepo = FirebaseTaskRepo();
   App({super.key});
 
   @override
@@ -23,6 +29,12 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => AuthCubit(firebaseUserRepo)..getUser(),
           ),
+          BlocProvider(
+            create: (context) => CategoryCubit(firebaseCategoryRepo: firebaseCategoryRepo)
+          ),
+          BlocProvider(
+            create: (context) => TaskCubit(firebaseTaskRepo: firebaseTaskRepo)
+          )
         ],
         child: BlocConsumer<AuthCubit, AuthStates>(
           builder: (context, state) {

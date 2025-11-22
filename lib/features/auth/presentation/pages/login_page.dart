@@ -39,14 +39,14 @@ class _LoginPageState extends State<LoginPage> {
         child: SafeArea(
           child: Form(
             key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Padding(
               padding:EdgeInsetsGeometry.symmetric(horizontal: 25),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 25),
+                  SizedBox(height: 50),
                   Text(
                     "Sign Up",
                     style: TextStyle(
@@ -65,6 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 30),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Email",
                     hintText: "Email", 
                     controller: emailcontroller,
                     obscureText: false,
@@ -81,6 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 25),
                   InputTextField(
+                    borderColor: Theme.of(context).colorScheme.primary,
+                    invertedBorderColor: Theme.of(context).colorScheme.inversePrimary,
+                    label: "Password",
                     hintText: "Password", 
                     controller: passcontroller,
                     obscureText: isObscure,

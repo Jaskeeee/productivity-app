@@ -19,7 +19,7 @@ class FirebaseCategoryRepo implements CategoryRepo{
     }
   }
   @override
-  Future<void> addCategory(String uid, String title, String color, Map<String, dynamic> icon, DateTime? deadline)async{
+  Future<void> addCategory(String uid, String title, String color, Map<String, dynamic> icon, DateTime? deadline,String? note)async{
     try{
       final CollectionReference categoryRef = _firebaseFirestore.collection("users").doc(uid).collection("categories");
       final DocumentReference docRef = categoryRef.doc();
@@ -31,6 +31,7 @@ class FirebaseCategoryRepo implements CategoryRepo{
         icon: icon, 
         createdAt: createdAt, 
         completed: 0,
+        note: note,
         deadline: deadline 
       );
       await categoryRef.doc(docRef.id).set(categoryModel.toJson());
@@ -50,7 +51,7 @@ class FirebaseCategoryRepo implements CategoryRepo{
     }
   }
   @override
-  Future<void> editCategory(String uid,String id, String? newTitle, String? newcolor, Map<String, dynamic>? newIcon, DateTime? newDeadline)async{
+  Future<void> editCategory(String uid,String id, String? newTitle, String? newcolor, Map<String, dynamic>? newIcon, DateTime? newDeadline,String? newNote)async{
     try{
       final CollectionReference categoryRef = _firebaseFirestore.collection("users").doc(uid).collection("categories");
       final DocumentSnapshot selectedCategory = await categoryRef.doc(id).get();
@@ -62,6 +63,7 @@ class FirebaseCategoryRepo implements CategoryRepo{
         icon: newIcon??categoryData["icon"], 
         createdAt: (categoryData["createdAt"]as Timestamp).toDate(),
         completed: categoryData["completed"],
+        note: newNote ?? (categoryData["note"]as String?),
         deadline: newDeadline ?? (categoryData["deadline"]!=null ?(categoryData["deadline"]as Timestamp).toDate():null)
       );
       await categoryRef.doc(id).update(editedCategoryModel.toJson());

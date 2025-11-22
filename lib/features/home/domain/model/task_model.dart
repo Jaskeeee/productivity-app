@@ -1,0 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class TaskModel {
+  final String id;
+  final String title;
+  final bool isCompleted;
+  final String occurrence;
+  final DateTime createdAt;
+  final DateTime? deadline;
+  
+  TaskModel({
+    required this.id,
+    required this.title,
+    required this.occurrence,
+    required this.createdAt,
+    this.isCompleted=false,
+    this.deadline
+  });
+
+  Map<String,dynamic> toJson(){
+    return{
+      "id":id,
+      "title":title,
+      "isCompleted":isCompleted,
+      "occurrence": occurrence,
+      "createdAt":createdAt,
+      "deadline":deadline!=null ?Timestamp.fromDate(deadline!) :null
+    };
+  }
+  factory TaskModel.fromJson(Map<String,dynamic> json){
+    return TaskModel(
+      id: json["id"], 
+      title: json["title"], 
+      isCompleted: json["isCompleted"], 
+      occurrence: json["occurrence"], 
+      createdAt: json["createdAt"],
+      deadline:json["deadline"]!=null ?(json["deadline"]as Timestamp).toDate() :null
+    );     
+  }
+}

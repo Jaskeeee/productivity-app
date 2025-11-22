@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productivity_app/features/auth/data/firebase_user_repo.dart';
-import 'package:productivity_app/features/auth/domain/app_user.dart';import 'package:productivity_app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:productivity_app/features/auth/domain/model/app_user.dart';import 'package:productivity_app/features/auth/presentation/cubit/auth_states.dart';
 
 class AuthCubit extends Cubit<AuthStates>{
   final FirebaseUserRepo firebaseUserRepo;
