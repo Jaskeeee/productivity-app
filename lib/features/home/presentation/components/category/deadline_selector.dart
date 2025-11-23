@@ -5,15 +5,11 @@ class DeadlineSelector extends StatelessWidget {
   final DateTime? selectedDeadline;
   final void Function() deleteDeadline;
   final Color optionalColor;
-  final Color iconColor;
   final Color selectColor;
   final TextStyle subheaderStyle;
   final bool deadlineSelected;
-  final Color dateTextColor;
   const DeadlineSelector({
     super.key,
-    required this.dateTextColor,
-    required this.iconColor,
     required this.selectedDeadline,
     required this.deadlineSelected,
     required this.subheaderStyle,
@@ -24,6 +20,12 @@ class DeadlineSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color iconColor = colorLuminance(selectColor) > 0.5
+      ? Theme.of(context).scaffoldBackgroundColor
+      : Theme.of(context).colorScheme.inversePrimary;
+    final Color dateTextColor = colorLuminance(selectColor) > 0.5
+      ? Theme.of(context).scaffoldBackgroundColor
+      : Theme.of(context).colorScheme.inversePrimary;
     return Row(
       mainAxisAlignment: deadlineSelected
         ? MainAxisAlignment.spaceBetween
@@ -43,7 +45,7 @@ class DeadlineSelector extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "${selectedDeadline!.day} ${months[selectedDeadline!.month]}",
+                "${selectedDeadline!.day} ${months[selectedDeadline!.month]},${selectedDeadline!.year}",
                 style: TextStyle(
                   color: dateTextColor,
                   fontSize: 16,

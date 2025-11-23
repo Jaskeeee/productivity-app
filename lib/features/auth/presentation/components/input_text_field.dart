@@ -37,6 +37,9 @@ class _InputTextFieldState extends State<InputTextField> {
       obscureText: widget.obscureText,
       controller: widget.controller,
       validator: widget.validator,
+      style: TextStyle(
+        color: widget.borderColor
+      ),
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: TextStyle(

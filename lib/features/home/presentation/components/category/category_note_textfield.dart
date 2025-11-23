@@ -30,13 +30,16 @@ class _CategoryNoteTextfieldState extends State<CategoryNoteTextfield> {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: 5,
+      style: TextStyle(
+        color: widget.borderColor
+      ),
       controller: widget.controller,
       validator: widget.validator,
       decoration: InputDecoration(
         labelText: widget.label,
         alignLabelWithHint: true,
         labelStyle: TextStyle(
-          color: widget.labelColor
+          color: widget.borderColor
         ),
         contentPadding: EdgeInsets.fromLTRB(10,20,25,20),
         hintText: widget.hintText,

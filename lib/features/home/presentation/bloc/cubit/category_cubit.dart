@@ -16,7 +16,7 @@ class CategoryCubit extends Cubit<CategoryStates>{
       emit(CategoryError(message: e.toString()));
     }
   }
-  Future<void> addCategory(String uid,String title,String color,Map<String,dynamic>icon,DateTime? deadline,String? note)async{
+  Future<void> addCategory(String uid,String title,int color,Map<String,dynamic>icon,DateTime? deadline,String? note)async{
     try{
       await firebaseCategoryRepo.addCategory(uid, title, color, icon, deadline,note);
       fetchCategories(uid);
@@ -34,7 +34,7 @@ class CategoryCubit extends Cubit<CategoryStates>{
       emit(CategoryError(message: e.toString()));
     }
   }
-  Future<void> editCategory(String uid,String id,String? newTitle,String? newcolor,Map<String,dynamic>?newIcon,DateTime? newDeadline,String? newNote)async{
+  Future<void> editCategory(String uid,String id,String? newTitle,int? newcolor,Map<String,dynamic>?newIcon,DateTime? newDeadline,String? newNote)async{
     try{
       await firebaseCategoryRepo.editCategory(uid, id, newTitle, newcolor, newIcon, newDeadline,newNote);
       fetchCategories(uid);

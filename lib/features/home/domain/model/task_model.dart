@@ -24,7 +24,7 @@ class TaskModel {
       "isCompleted":isCompleted,
       "occurrence": occurrence,
       "createdAt":createdAt,
-      "deadline":deadline!=null ?Timestamp.fromDate(deadline!) :null
+      if(deadline!=null)"deadline":Timestamp.fromDate(deadline!)
     };
   }
   factory TaskModel.fromJson(Map<String,dynamic> json){

@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/core/utils.dart';
 
 class ActionButton extends StatelessWidget {
   final void Function() onPressed;
   final Alignment buttonAlignment;
   final IconData iconData;
   final String title;
-  final Color color;
-  final Color itemColor;
+  final Color selectColor;
   const ActionButton({
     super.key,
     required this.onPressed,
     required this.title,
     required this.iconData,
-    required this.color,
-    required this.itemColor,
+    required this.selectColor,
     required this.buttonAlignment
   });
 
   @override
   Widget build(BuildContext context) {
+    final color = colorLuminance(selectColor) > 0.5
+      ? Colors.black
+      : Colors.white;
+    final itemColor = colorLuminance(selectColor) > 0.5
+      ? Colors.white
+      : Colors.black;
     return InkWell(
       onTap: onPressed,
       child: Container(
