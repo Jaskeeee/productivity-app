@@ -11,9 +11,14 @@ class FirebaseCategoryRepo implements CategoryRepo{
       final QuerySnapshot categorydocSnap = await categoryRef.get();
       final List<CategoryModel> categories = await Future.wait(categorydocSnap.docs.map((doc)async{
         final Map<String,dynamic> docData = doc.data() as Map<String,dynamic>;
-        final QuerySnapshot tasks = await categoryRef.doc(doc.id).collection("tasks").get();
+        final CollectionReference tasksRef = categoryRef.doc(doc.id).collection("tasks");
+        final QuerySnapshot tasks = await tasksRef.get();
+        final completedCountSnapshot = await tasksRef.where('isCompleted',isEqualTo: true).count().get();
+
+        final int completed=completedCountSnapshot.count ?? 0;
         final int taskCount = tasks.docs.length;
         docData['value'] = taskCount;
+        docData['completed']=completed;
         return CategoryModel.fromJson(docData);
       }).toList());
       return categories;

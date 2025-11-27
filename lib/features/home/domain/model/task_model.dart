@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TaskModel {
   final String id;
   final String title;
-  final bool isCompleted;
+  bool isCompleted;
   final String occurrence;
   final DateTime createdAt;
   final DateTime? deadline;
@@ -33,7 +33,7 @@ class TaskModel {
       title: json["title"], 
       isCompleted: json["isCompleted"], 
       occurrence: json["occurrence"], 
-      createdAt: json["createdAt"],
+      createdAt: (json["createdAt"] as Timestamp).toDate(),
       deadline:json["deadline"]!=null ?(json["deadline"]as Timestamp).toDate() :null
     );     
   }

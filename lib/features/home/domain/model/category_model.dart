@@ -9,7 +9,7 @@ class CategoryModel {
   final DateTime createdAt;
   final String? note;
   final DateTime? deadline;
-  final double completed;
+  final int completed;
   final int value;
 
   CategoryModel({

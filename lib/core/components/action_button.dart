@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:productivity_app/core/utils.dart';
+import 'package:productivity_app/core/themes/themes.dart';
 
 class ActionButton extends StatelessWidget {
   final void Function() onPressed;
@@ -18,12 +18,7 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = colorLuminance(selectColor) > 0.5
-      ? Colors.black
-      : Colors.white;
-    final itemColor = colorLuminance(selectColor) > 0.5
-      ? Colors.white
-      : Colors.black;
+    final color = handleDefaultValueColor(selectColor);
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -41,7 +36,7 @@ class ActionButton extends StatelessWidget {
               title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: itemColor,
+                color: invertedDefaultValue(color),
                 fontSize: 25
               ),
             ),
@@ -49,7 +44,7 @@ class ActionButton extends StatelessWidget {
             Icon(
               iconData,
               size: 25,
-              color: itemColor,
+              color: invertedDefaultValue(color)
             )
           ],
         ),

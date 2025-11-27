@@ -5,4 +5,5 @@ abstract class TaskRepo {
   Future<void> addTask(String uid,String categoryId,String title,String? occurrence,DateTime? deadline);
   Future<void> editTask(String uid,String categoryId,String taskId,String? newTitle,String? occurrence,DateTime? deadline);
   Future<void>deleteTask(String uid,String categoryId,String taskId);
+  Future<void>updateTasks(String uid,String categoryId,Set<String> updatedIds,List<TaskModel> localTask);
 }

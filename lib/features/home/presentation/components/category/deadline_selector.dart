@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/core/themes/themes.dart';
 import 'package:productivity_app/core/utils.dart';
 
 class DeadlineSelector extends StatelessWidget {
@@ -7,9 +8,11 @@ class DeadlineSelector extends StatelessWidget {
   final Color optionalColor;
   final Color selectColor;
   final TextStyle subheaderStyle;
+  final String title;
   final bool deadlineSelected;
   const DeadlineSelector({
     super.key,
+    required this.title,
     required this.selectedDeadline,
     required this.deadlineSelected,
     required this.subheaderStyle,
@@ -20,18 +23,14 @@ class DeadlineSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color iconColor = colorLuminance(selectColor) > 0.5
-      ? Theme.of(context).scaffoldBackgroundColor
-      : Theme.of(context).colorScheme.inversePrimary;
-    final Color dateTextColor = colorLuminance(selectColor) > 0.5
-      ? Theme.of(context).scaffoldBackgroundColor
-      : Theme.of(context).colorScheme.inversePrimary;
+    final Color iconColor = handleDefaultValueColor(selectColor);
+    final Color dateTextColor = handleDefaultValueColor(selectColor);
     return Row(
       mainAxisAlignment: deadlineSelected
         ? MainAxisAlignment.spaceBetween
         : MainAxisAlignment.start,
       children: [
-        Text("Category Deadline ", style: subheaderStyle),
+        Text(title, style: subheaderStyle),
         !deadlineSelected
         ?Text(
           "(Optional)",

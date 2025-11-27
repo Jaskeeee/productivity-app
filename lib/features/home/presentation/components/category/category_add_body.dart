@@ -1,10 +1,9 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/Models/icon_picker_icon.dart';
-import 'package:flutter_iconpicker/Serialization/icondata_serialization.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:productivity_app/core/components/action_button.dart';
 import 'package:productivity_app/core/components/horizontal_date_selector.dart';
-import 'package:productivity_app/core/utils.dart';
+import 'package:productivity_app/core/themes/themes.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';
 import 'package:productivity_app/features/home/presentation/bloc/cubit/category_cubit.dart';
 import 'package:productivity_app/features/home/presentation/components/category/category_functions.dart';
@@ -69,30 +68,21 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
   @override
   Widget build(BuildContext context) {
 
-    final Color invertedBorderColor = colorLuminance(widget.selectColor) > 0.5
-      ? Theme.of(context).scaffoldBackgroundColor
-      : Theme.of(context).colorScheme.inversePrimary;
+    final Color invertedBorderColor = handleLuminance(widget.selectColor);
     
     final TextStyle headerStyle =  TextStyle(
-      color: colorLuminance(widget.selectColor) > 0.4
-      ?Theme.of(context).scaffoldBackgroundColor
-      :Theme.of(context).colorScheme.inversePrimary,
+      color:handleLuminance(widget.selectColor),
       fontSize: 24,
       fontWeight: FontWeight.bold,
     ); //header style
 
     final TextStyle subheaderStyle = TextStyle(
-      color: colorLuminance(widget.selectColor) > 0.4
-      ?Theme.of(context).scaffoldBackgroundColor
-      :Theme.of(context).colorScheme.inversePrimary,
+      color:handleLuminance(widget.selectColor),
       fontSize: 16,
       fontWeight: FontWeight.w600,
     );//subheader style
 
-    final Color optionalColor = colorLuminance(widget.selectColor) > 0.5
-      ? Theme.of(context).colorScheme.primary
-      : Colors.grey;
-
+    final Color optionalColor =handleSuggsetionsColor(widget.selectColor);
     return Container(  
       decoration: BoxDecoration(
         color: widget.selectColor,
@@ -119,7 +109,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   ),
                   SelectedColorCard(
                     hasError: hasColorError,
-                    borderColor: categoryFunctions.borderColorSelect(context,widget.selectColor),
+                    borderColor: borderColorSelect(widget.selectColor),
                     color: widget.selectColor,
                     onPressed:()=>colorPicker(context, (color){
                       setState(() {
@@ -135,7 +125,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               SizedBox(height: 15),
               InputTextField(
                 invertedBorderColor: invertedBorderColor,
-                borderColor: categoryFunctions.borderColorSelect(context,widget.selectColor),
+                borderColor: borderColorSelect(widget.selectColor),
                 label: "Title",
                 hintText: "Title",
                 controller: titleController,
@@ -157,7 +147,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   border: Border.all(
                     color: hasIconError
                     ?Theme.of(context).colorScheme.error
-                    :categoryFunctions.borderColorSelect(context,widget.selectColor),
+                    :borderColorSelect(widget.selectColor),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -173,16 +163,14 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   },
                   leading: Icon(
                     Icons.insert_emoticon_outlined,
-                    color: categoryFunctions.borderColorSelect(context,widget.selectColor),
+                    color: borderColorSelect(widget.selectColor),
                     size: 24,
                   ),
                   title: Text("Select Icon"),
-                  titleTextStyle: TextStyle(color:categoryFunctions.borderColorSelect(context,widget.selectColor), fontSize: 16),
+                  titleTextStyle: TextStyle(color:borderColorSelect(widget.selectColor), fontSize: 16),
                   trailing: Icon(
                     selectedIcon?.data ?? Icons.question_mark,
-                    color: colorLuminance(widget.selectColor) > 0.5
-                        ? Theme.of(context).scaffoldBackgroundColor
-                        : Theme.of(context).colorScheme.inversePrimary,
+                    color:handleDefaultValueColor(widget.selectColor),
                     size: 24,
                   ),
                 ),
@@ -204,7 +192,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               SizedBox(height: 15),
               CategoryNoteTextfield(
                 labelColor: optionalColor,
-                borderColor: categoryFunctions.borderColorSelect(context,widget.selectColor),
+                borderColor: borderColorSelect(widget.selectColor),
                 invertedBorderColor: invertedBorderColor,
                 label: "(Optional)",
                 controller: noteController,
@@ -213,6 +201,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               ),
               SizedBox(height: 15),
               DeadlineSelector(
+                title: "Category Deadline",
                 selectedDeadline: selectedDeadline,
                 deadlineSelected: deadlineSelected,
                 subheaderStyle: subheaderStyle,
@@ -231,21 +220,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 child: ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: [0.0, 0.1, 0.2, 0.8, 0.9, 1.0],
-                      colors: [
-                        Colors.black,
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.black,
-                      ],
-                    ).createShader(bounds);
-                  },
+                  shaderCallback: (Rect bounds)=>shader.createShader(bounds),
                   blendMode: BlendMode.dstOut,
                   child: Center(
                     child: HorizontalDateSelector(
@@ -286,22 +261,11 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                       hasError = true;
                     }
                     if (hasError) return;
-                    final Map<String, dynamic> icon = serializeIcon(
-                      selectedIcon!,
-                    );
+                    final Map<String, dynamic> icon = serializeIcon(selectedIcon!);
                     final String title = titleController.text;
-                    final String? note = noteController.text.isEmpty
-                        ? null
-                        : noteController.text;
+                    final String? note = noteController.text.isEmpty?null: noteController.text;
                     final int color = widget.selectColor.toARGB32();
-                    widget.categoryCubit.addCategory(
-                      widget.uid,
-                      title,
-                      color,
-                      icon,
-                      selectedDeadline,
-                      note,
-                    );
+                    widget.categoryCubit.addCategory(widget.uid,title,color,icon,selectedDeadline,note,);
                     Navigator.of(context).pop();
                   }
                 },

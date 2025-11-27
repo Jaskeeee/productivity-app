@@ -12,7 +12,7 @@ class FirebaseTaskRepo implements TaskRepo{
      .collection("categories").doc(categoryId)
      .collection("tasks").snapshots().map((snapshots){
       return snapshots.docs.map((doc){
-        return TaskModel.fromJson(doc as Map<String,dynamic>);
+        return TaskModel.fromJson(doc.data());
       }).toList();
      });
     }catch(e){
@@ -64,6 +64,21 @@ class FirebaseTaskRepo implements TaskRepo{
 
     }catch(e){
       throw Exception("Failed to Delete Task: $e");
+    }
+  }
+  @override
+  Future<void> updateTasks(String uid,String categoryId,Set<String> updatedIds, List<TaskModel> localTask)async{
+    try{
+      for(var task in localTask){
+        if(updatedIds.contains(task.id)){
+          await _firebaseFirestore.collection("users").doc(uid)
+          .collection("categories").doc(categoryId)
+          .collection("tasks").doc(task.id).update({"isCompleted":task.isCompleted});
+        }
+      }
+    }
+    catch(e){
+      throw Exception("Failed to Update Tasks: $e");
     }
   }
 } 

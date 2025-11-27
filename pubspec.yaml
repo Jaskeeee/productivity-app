@@ -45,8 +45,13 @@ dependencies:
   flutter_dotenv: ^6.0.0
   easy_date_timeline: ^2.0.9
   flex_color_picker: ^3.7.2
-  flutter_iconpicker: ^4.0.3
   cloud_functions: ^6.0.4
+  fl_chart: ^1.1.1
+  multi_dropdown: ^3.0.1
+  flutter_iconpicker_plus: ^3.2.3
+  flutter_iconpicker: ^4.0.3
+  easy_pie_chart: ^1.0.2
+  timelines_plus: ^1.0.8
 
 dev_dependencies:
   flutter_test:

@@ -8,9 +8,10 @@ class TaskCubit extends Cubit<TaskStates>{
   TaskCubit({required this.firebaseTaskRepo}):super(TaskInitial());
 
   Future<void>fetchTask(String uid,String categoryId)async{
+    emit(TaskInitial());
     try{
-      final Stream<List<TaskModel>> tasks = firebaseTaskRepo.fetchTasks(uid, categoryId);
-      emit(TaskLoaded(tasks: tasks)); 
+      final Stream<List<TaskModel>> stream = firebaseTaskRepo.fetchTasks(uid, categoryId);
+      stream.first.then((tasks)=>emit(TaskLoaded(tasks: tasks)));
     }
     catch(e){
       emit(TaskError(message:e.toString()));
@@ -37,6 +38,15 @@ class TaskCubit extends Cubit<TaskStates>{
   Future<void>deleteTask(String uid,String categoryId,String taskId)async{
     try{
       await firebaseTaskRepo.deleteTask(uid, categoryId, taskId);
+      fetchTask(uid, categoryId);
+    }
+    catch(e){
+      emit(TaskError(message: e.toString()));
+    }
+  }
+  Future<void> updateTask(String uid,String categoryId,Set<String> updatedIds,List<TaskModel> localTask)async{
+    try{
+      await firebaseTaskRepo.updateTasks(uid, categoryId, updatedIds, localTask);
       fetchTask(uid, categoryId);
     }
     catch(e){
