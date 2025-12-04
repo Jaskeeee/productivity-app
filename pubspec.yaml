@@ -52,6 +52,10 @@ dependencies:
   flutter_iconpicker: ^4.0.3
   easy_pie_chart: ^1.0.2
   timelines_plus: ^1.0.8
+  flutter_slidable: ^4.0.3
+  dotted_decoration: ^2.0.0
+  dotted_line: ^3.2.3
+  implicitly_animated_reorderable_list_2: ^0.6.0
 
 dev_dependencies:
   flutter_test:

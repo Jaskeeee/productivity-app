@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:productivity_app/core/utils.dart';
+import 'package:productivity_app/core/constants/asset_paths.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final void Function() onPressed;

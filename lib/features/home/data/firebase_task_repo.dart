@@ -7,6 +7,13 @@ class FirebaseTaskRepo implements TaskRepo{
   @override
   Stream<List<TaskModel>> fetchTasks(String uid, String categoryId){
     try{
+      // final CollectionReference taskRef = _firebaseFirestore.collection("users").doc(uid)
+      // .collection("categories").doc(categoryId)
+      // .collection("tasks");
+      // if(filters.contains("Daily")){
+      //   final Query taskQuery = taskRef.where("occurrence",isEqualTo: "daily");
+      // }
+      // if(filters.contains(""))
      return _firebaseFirestore
      .collection("users").doc(uid)
      .collection("categories").doc(categoryId)

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:productivity_app/core/components/loading_animation.dart';
+import 'package:productivity_app/core/ui/loading_animation.dart';
 import 'package:productivity_app/core/themes/themes.dart';
+import 'package:productivity_app/core/utils.dart';
 import 'package:productivity_app/features/auth/data/firebase_user_repo.dart';
 import 'package:productivity_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:productivity_app/features/auth/presentation/cubit/auth_states.dart';
@@ -11,11 +12,15 @@ import 'package:productivity_app/features/home/data/firebase_task_repo.dart';
 import 'package:productivity_app/features/home/presentation/bloc/cubit/category_cubit.dart';
 import 'package:productivity_app/features/home/presentation/bloc/cubit/task_cubit.dart';
 import 'package:productivity_app/features/home/presentation/pages/home_page.dart';
+import 'package:productivity_app/features/profile/data/firebase_profile_repo.dart';
+import 'package:productivity_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class App extends StatelessWidget {
   final FirebaseUserRepo firebaseUserRepo = FirebaseUserRepo();
   final FirebaseCategoryRepo firebaseCategoryRepo = FirebaseCategoryRepo();
+  final FirebaseProfileRepo firebaseProfileRepo = FirebaseProfileRepo();
   final FirebaseTaskRepo firebaseTaskRepo = FirebaseTaskRepo();
+
   App({super.key});
 
   @override
@@ -29,11 +34,13 @@ class App extends StatelessWidget {
           create:(context)=>CategoryCubit(firebaseCategoryRepo: firebaseCategoryRepo)
         ),
         BlocProvider<TaskCubit>(
-          create: (context)=>TaskCubit(firebaseTaskRepo: firebaseTaskRepo)
-        )
+        create: (context)=>TaskCubit(firebaseTaskRepo: firebaseTaskRepo)
+        ),
+        BlocProvider<ProfileCubit>(create:(context)=>ProfileCubit(firebaseProfileRepo: firebaseProfileRepo))
       ],
       child: MaterialApp(
         theme: darkTheme,
+        navigatorObservers:[routeObserver],
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthCubit, AuthStates>(
           builder: (context, state) {

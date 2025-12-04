@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
-import 'package:productivity_app/core/components/action_button.dart';
-import 'package:productivity_app/core/components/horizontal_date_selector.dart';
+import 'package:productivity_app/core/ui/widgets/action_button.dart';
+import 'package:productivity_app/core/ui/section/horizontal_date_selector.dart';
+import 'package:productivity_app/core/constants/app_data.dart';
 import 'package:productivity_app/core/themes/themes.dart';
-import 'package:productivity_app/core/utils.dart';
 import 'package:productivity_app/features/auth/domain/model/app_user.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';
 import 'package:productivity_app/features/home/domain/model/category_model.dart';
 import 'package:productivity_app/features/home/presentation/bloc/cubit/task_cubit.dart';
-import 'package:productivity_app/features/home/presentation/components/category/deadline_selector.dart';
+import 'package:productivity_app/features/home/presentation/components/widgets/deadline_selector.dart';
 
 class TaskAddBody extends StatefulWidget {
   final AppUser? user;
@@ -118,7 +118,7 @@ class _TaskAddBodyState extends State<TaskAddBody> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(
-                      color: Colors.black,
+                      color: invertedBorderColor,
                       style: BorderStyle.solid,
                       width: 2
                     ),                 

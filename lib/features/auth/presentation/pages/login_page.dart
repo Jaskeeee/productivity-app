@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:productivity_app/core/components/google_sign_in_button.dart';
-import 'package:productivity_app/core/components/section_divider.dart';
+import 'package:productivity_app/core/ui/widgets/google_sign_in_button.dart';
+import 'package:productivity_app/core/ui/widgets/section_divider.dart';
 import 'package:productivity_app/features/auth/presentation/components/attribute_text.dart';
 import 'package:productivity_app/features/auth/presentation/components/auth_buttons.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';

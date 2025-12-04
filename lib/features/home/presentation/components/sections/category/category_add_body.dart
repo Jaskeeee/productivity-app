@@ -1,25 +1,30 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:productivity_app/core/components/action_button.dart';
-import 'package:productivity_app/core/components/horizontal_date_selector.dart';
+import 'package:productivity_app/core/ui/widgets/action_button.dart';
+import 'package:productivity_app/core/ui/section/horizontal_date_selector.dart';
 import 'package:productivity_app/core/themes/themes.dart';
 import 'package:productivity_app/features/auth/presentation/components/input_text_field.dart';
+import 'package:productivity_app/features/home/domain/model/category_model.dart';
 import 'package:productivity_app/features/home/presentation/bloc/cubit/category_cubit.dart';
-import 'package:productivity_app/features/home/presentation/components/category/category_functions.dart';
-import 'package:productivity_app/features/home/presentation/components/category/category_note_textfield.dart';
-import 'package:productivity_app/features/home/presentation/components/category/deadline_selector.dart';
-import 'package:productivity_app/features/home/presentation/components/category/selected_color_card.dart';
+import 'package:productivity_app/features/home/presentation/components/sections/category/category_functions.dart';
+import 'package:productivity_app/features/home/presentation/components/widgets/category/category_note_textfield.dart';
+import 'package:productivity_app/features/home/presentation/components/widgets/deadline_selector.dart';
+import 'package:productivity_app/core/ui/widgets/selected_color_card.dart';
 
 class CategoryAddBody extends StatefulWidget {
   final String uid;
-  Color selectColor;
+  late Color selectColor;
   final CategoryCubit categoryCubit;
+  final CategoryModel? categoryModel;
+  final bool editMode;
   CategoryAddBody({
     super.key,
     required this.uid,
     required this.categoryCubit,
-    required this.selectColor
+    required this.selectColor,
+    required this.editMode,
+    this.categoryModel,
   });
 
   @override
@@ -27,7 +32,7 @@ class CategoryAddBody extends StatefulWidget {
 }
 
 class CategoryAddBodyState extends State<CategoryAddBody> {
-  final TextEditingController titleController = TextEditingController();
+  late TextEditingController titleController = TextEditingController(text:widget.categoryModel!.title);
   final TextEditingController noteController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CategoryFunctions categoryFunctions = CategoryFunctions();
@@ -47,7 +52,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
     super.dispose();
   }
 
-    Future<void> colorPicker(BuildContext context,void Function(Color? color) onColorChanged) async {
+  Future<void> colorPicker(BuildContext context,void Function(Color? color) onColorChanged) async {
       ColorPicker(
         title: Row(
           children: [
@@ -82,7 +87,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
       fontWeight: FontWeight.w600,
     );//subheader style
 
-    final Color optionalColor =handleSuggsetionsColor(widget.selectColor);
+    final Color optionalColor=handleSuggsetionsColor(widget.selectColor);
     return Container(  
       decoration: BoxDecoration(
         color: widget.selectColor,
@@ -104,7 +109,9 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Add Category!",
+                    widget.editMode
+                    ?widget.categoryModel!.title
+                    :"Add Category!",
                     style: headerStyle
                   ),
                   SelectedColorCard(

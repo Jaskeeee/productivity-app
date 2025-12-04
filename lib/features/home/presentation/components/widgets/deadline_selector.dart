@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/core/constants/static_data.dart';
 import 'package:productivity_app/core/themes/themes.dart';
-import 'package:productivity_app/core/utils.dart';
 
 class DeadlineSelector extends StatelessWidget {
   final DateTime? selectedDeadline;
@@ -44,7 +44,7 @@ class DeadlineSelector extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "${selectedDeadline!.day} ${months[selectedDeadline!.month]},${selectedDeadline!.year}",
+                "${selectedDeadline!.day} ${monthAbbreviations[selectedDeadline!.month]},${selectedDeadline!.year}",
                 style: TextStyle(
                   color: dateTextColor,
                   fontSize: 16,

@@ -1,9 +1,9 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:productivity_app/core/components/calendar_child.dart';
-import 'package:productivity_app/core/components/cancel_button.dart';
-import 'package:productivity_app/core/components/confirm_button.dart';
-import 'package:productivity_app/core/utils.dart';
+import 'package:productivity_app/core/ui/widgets/calendar_child.dart';
+import 'package:productivity_app/core/ui/widgets/cancel_button.dart';
+import 'package:productivity_app/core/ui/widgets/confirm_button.dart';
+import 'package:productivity_app/core/constants/static_data.dart';
 
 class HorizontalDateSelector extends StatefulWidget {
 final DateTime selectedDate; 
@@ -52,8 +52,8 @@ class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
         height: 50
       ),
       itemBuilder: (BuildContext context, DateTime date, bool isSelected, bool isDisabled, bool isToday, void Function() onTap) {
-        final String dayName = weekdays[date.weekday];
-        final String monthName = months[date.month];
+        final String dayName = weekdayAbbreviations[date.weekday];
+        final String monthName = monthAbbreviations[date.month];
         return CalendarChild(
           isToday: isToday,
           date: date, 

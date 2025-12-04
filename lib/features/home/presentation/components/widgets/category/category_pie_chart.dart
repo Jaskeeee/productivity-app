@@ -1,11 +1,16 @@
 import 'package:easy_pie_chart/easy_pie_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Serialization/icondata_serialization.dart';
+import 'package:productivity_app/features/auth/domain/model/app_user.dart';
 import 'package:productivity_app/features/home/domain/model/category_model.dart';
+import 'package:productivity_app/features/home/presentation/pages/task_page.dart';
 
 class CategoryPieChart extends StatefulWidget {
+  final AppUser? user;
   final List<CategoryModel> categories;
   const CategoryPieChart({
     super.key,
+    required this.user,
     required this.categories
   });
 
@@ -50,7 +55,6 @@ class _CategoryPieChartState extends State<CategoryPieChart> with TickerProvider
   }
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 250,
       width: 250,
@@ -72,6 +76,14 @@ class _CategoryPieChartState extends State<CategoryPieChart> with TickerProvider
             return PieData(value: value, color: color);
           }
         ),
+        onTap: (index){
+          final CategoryModel categoryModel = widget.categories[index];
+          final IconData iconData = deserializeIcon(widget.categories[index].icon)!.data;
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context)=>TaskPage(categoryModel: categoryModel, user: widget.user,categoryIconData:iconData ,))
+          );
+        },
         showValue: false,
         borderWidth: 30,
         size: 100,

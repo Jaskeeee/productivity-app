@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
 
-class TaskTile extends StatelessWidget {
+class TaskTile extends StatefulWidget {
   final String title;
   final bool isCompleted;
   final void Function(bool?) onChanged;
-  TaskTile({
+  const TaskTile({
     super.key, 
     required this.title,
     required this.isCompleted,
     required this.onChanged
   });
+  @override
+  State<TaskTile> createState() => _TaskTileState();
+}
+
+class _TaskTileState extends State<TaskTile>{
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top:5,bottom: 5),
       child: ListTile(
-        title: Text(title),
+        title: Text(widget.title),
         titleTextStyle: TextStyle(
           fontFamily: 'IBMPlexMono',
           color: Theme.of(context).colorScheme.inversePrimary,
-          decoration: isCompleted? TextDecoration.lineThrough :TextDecoration.none,
+          decoration: widget.isCompleted? TextDecoration.lineThrough :TextDecoration.none,
           fontSize: 16,
         ),
         leading: Checkbox(
-          value: isCompleted,
+          value: widget.isCompleted,
           checkColor: Colors.green, 
           shape: CircleBorder(
             side: BorderSide(
-              color: Theme.of(context).colorScheme.inversePrimary
+              color: Theme.of(context).colorScheme.secondary
             )
           ),
-          onChanged: onChanged
+          onChanged: widget.onChanged
         ),
         shape: RoundedRectangleBorder(
           side: BorderSide(

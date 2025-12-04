@@ -2,6 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
   colorScheme: ColorScheme.dark(
     primary: Colors.grey.shade800,
@@ -14,6 +15,11 @@ final ThemeData darkTheme = ThemeData(
   listTileTheme: ListTileThemeData(
     titleTextStyle: TextStyle(fontFamily: "IBMPlexMono"),
   ),
+);
+
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: Colors.white70
 );
 MonthYearThemeData monthYearThemeData = MonthYearThemeData(
   shape: RoundedRectangleBorder(

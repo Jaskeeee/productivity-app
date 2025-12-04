@@ -261,3 +261,4 @@ firebase/
 #environment variables
 .env
 todo.md
+IMPROVEMENTS.md
