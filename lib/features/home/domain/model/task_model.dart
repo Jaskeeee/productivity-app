@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TaskModel {
   final String id;
   final String title;
-  bool isCompleted;
+  final bool isCompleted;
   final String occurrence;
   final DateTime createdAt;
   final DateTime? deadline;
@@ -13,7 +13,7 @@ class TaskModel {
     required this.title,
     required this.occurrence,
     required this.createdAt,
-    this.isCompleted=false,
+    required this.isCompleted,
     this.deadline
   });
 
@@ -27,6 +27,18 @@ class TaskModel {
       if(deadline!=null)"deadline":Timestamp.fromDate(deadline!)
     };
   }
+
+  TaskModel copyWith({String? title,String? occurrence,bool? isCompleted,DateTime? deadline}){
+    return TaskModel(
+      id: id, 
+      title: title ?? this.title, 
+      occurrence: occurrence ?? this.occurrence, 
+      isCompleted: isCompleted ?? this.isCompleted,
+      createdAt: createdAt,
+      deadline: deadline?? this.deadline
+    );
+  }
+
   factory TaskModel.fromJson(Map<String,dynamic> json){
     return TaskModel(
       id: json["id"], 

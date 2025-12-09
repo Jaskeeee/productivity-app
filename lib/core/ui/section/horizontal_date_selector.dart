@@ -36,7 +36,7 @@ class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
       monthYearPickerOptions: MonthYearPickerOptions(
         
         confirmButtonBuilder: (context, handleConfirm, confirmText)=>ConfirmButton(text: confirmText, onPressed: handleConfirm),
-        cancelButtonBuilder: (context, handleCancel, cancelText) => CancelButton(text: cancelText, onPressed: handleCancel),
+        cancelButtonBuilder: (context, handleCancel, cancelText)=>CancelButton(text: cancelText, onPressed: handleCancel),
         cancelText: "Cancel",
         cancelTextStyle:TextStyle(
           color: Theme.of(context).colorScheme.inversePrimary,

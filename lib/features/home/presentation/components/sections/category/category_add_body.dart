@@ -14,7 +14,7 @@ import 'package:productivity_app/core/ui/widgets/selected_color_card.dart';
 
 class CategoryAddBody extends StatefulWidget {
   final String uid;
-  late Color selectColor;
+  late Color sheetColor;
   final CategoryCubit categoryCubit;
   final CategoryModel? categoryModel;
   final bool editMode;
@@ -22,7 +22,7 @@ class CategoryAddBody extends StatefulWidget {
     super.key,
     required this.uid,
     required this.categoryCubit,
-    required this.selectColor,
+    required this.sheetColor,
     required this.editMode,
     this.categoryModel,
   });
@@ -32,18 +32,19 @@ class CategoryAddBody extends StatefulWidget {
 }
 
 class CategoryAddBodyState extends State<CategoryAddBody> {
-  late TextEditingController titleController = TextEditingController(text:widget.categoryModel!.title);
-  final TextEditingController noteController = TextEditingController();
+  late TextEditingController titleController = TextEditingController(text:widget.categoryModel?.title ?? "");
+  late TextEditingController noteController = TextEditingController(text:widget.categoryModel?.note ?? "");
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CategoryFunctions categoryFunctions = CategoryFunctions();
-  int colorChange = 0;
-  bool deadlineSelected = false;
-  DateTime? selectedDeadline;
+  
+  late int colorChange = 0;
+  late bool hasIconError = false;
+  late bool hasColorError = false;
+  late bool hasError = false;
+  late bool deadlineSelected = widget.categoryModel?.deadline!=null ?true:false;
+  late DateTime? selectedDeadline = widget.categoryModel?.deadline;
   IconPickerIcon? selectedIcon;
   //Error Control Variables
-  bool hasIconError = false;
-  bool hasColorError = false;
-  bool hasError = false;
 
   @override
   void dispose() {
@@ -73,24 +74,23 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
   @override
   Widget build(BuildContext context) {
 
-    final Color invertedBorderColor = handleLuminance(widget.selectColor);
-    
+    final Color invertedBorderColor = handleLuminance(widget.sheetColor); 
     final TextStyle headerStyle =  TextStyle(
-      color:handleLuminance(widget.selectColor),
+      color:handleLuminance(widget.sheetColor),
       fontSize: 24,
       fontWeight: FontWeight.bold,
     ); //header style
 
     final TextStyle subheaderStyle = TextStyle(
-      color:handleLuminance(widget.selectColor),
+      color:handleLuminance(widget.sheetColor),
       fontSize: 16,
       fontWeight: FontWeight.w600,
     );//subheader style
 
-    final Color optionalColor=handleSuggsetionsColor(widget.selectColor);
+    final Color optionalColor=handleSuggsetionsColor(widget.sheetColor);
     return Container(  
       decoration: BoxDecoration(
-        color: widget.selectColor,
+        color: widget.sheetColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
@@ -108,19 +108,23 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.editMode
-                    ?widget.categoryModel!.title
-                    :"Add Category!",
-                    style: headerStyle
+                  Expanded(
+                    child: Text(
+                      widget.editMode
+                      ?widget.categoryModel!.title
+                      :"Add Category!",
+                      style: headerStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   SelectedColorCard(
                     hasError: hasColorError,
-                    borderColor: borderColorSelect(widget.selectColor),
-                    color: widget.selectColor,
+                    borderColor: borderColorSelect(widget.sheetColor),
+                    color: widget.sheetColor,
                     onPressed:()=>colorPicker(context, (color){
                       setState(() {
-                        widget.selectColor = color!;
+                        widget.sheetColor = color!;
                         colorChange += 1;
                       });
                     }),
@@ -132,7 +136,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               SizedBox(height: 15),
               InputTextField(
                 invertedBorderColor: invertedBorderColor,
-                borderColor: borderColorSelect(widget.selectColor),
+                borderColor: borderColorSelect(widget.sheetColor),
                 label: "Title",
                 hintText: "Title",
                 controller: titleController,
@@ -146,7 +150,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                 },
               ),
               SizedBox(height: 15),
-              Text("Category Icons", style: subheaderStyle),
+              Text("Category Icon", style: subheaderStyle),
               SizedBox(height: 15),
               Container(
                 decoration: BoxDecoration(
@@ -154,7 +158,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   border: Border.all(
                     color: hasIconError
                     ?Theme.of(context).colorScheme.error
-                    :borderColorSelect(widget.selectColor),
+                    :borderColorSelect(widget.sheetColor),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -170,14 +174,16 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   },
                   leading: Icon(
                     Icons.insert_emoticon_outlined,
-                    color: borderColorSelect(widget.selectColor),
+                    color: borderColorSelect(widget.sheetColor),
                     size: 24,
                   ),
                   title: Text("Select Icon"),
-                  titleTextStyle: TextStyle(color:borderColorSelect(widget.selectColor), fontSize: 16),
+                  titleTextStyle: TextStyle(color:borderColorSelect(widget.sheetColor), fontSize: 16),
                   trailing: Icon(
-                    selectedIcon?.data ?? Icons.question_mark,
-                    color:handleDefaultValueColor(widget.selectColor),
+                    widget.editMode
+                    ?(deserializeIcon(widget.categoryModel!.icon)!.data)
+                    :(selectedIcon?.data ?? Icons.question_mark),
+                    color:handleLuminance(widget.sheetColor),
                     size: 24,
                   ),
                 ),
@@ -199,7 +205,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               SizedBox(height: 15),
               CategoryNoteTextfield(
                 labelColor: optionalColor,
-                borderColor: borderColorSelect(widget.selectColor),
+                borderColor: borderColorSelect(widget.sheetColor),
                 invertedBorderColor: invertedBorderColor,
                 label: "(Optional)",
                 controller: noteController,
@@ -209,7 +215,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               SizedBox(height: 15),
               DeadlineSelector(
                 title: "Category Deadline",
-                selectedDeadline: selectedDeadline,
+                selectedDeadline: selectedDeadline ?? DateTime.now(), 
                 deadlineSelected: deadlineSelected,
                 subheaderStyle: subheaderStyle,
                 deleteDeadline: () => setState(() {
@@ -217,7 +223,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   selectedDeadline = null;
                 }),
                 optionalColor: optionalColor,
-                selectColor: widget.selectColor,
+                selectColor: widget.sheetColor,
               ),
               SizedBox(height: 15),
               Container(
@@ -232,9 +238,11 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                   child: Center(
                     child: HorizontalDateSelector(
                       selectedColor: colorChange == 0
-                          ? Theme.of(context).colorScheme.inversePrimary
-                          : widget.selectColor,
-                      selectedDate: selectedDeadline ?? DateTime.now(),
+                        ? Theme.of(context).colorScheme.inversePrimary
+                        : widget.sheetColor,
+                      selectedDate: widget.editMode 
+                      ?(widget.categoryModel?.deadline??DateTime.now())
+                      :(selectedDeadline ?? DateTime.now()),
                       onDateChange: (date) {
                         setState(() {
                           selectedDeadline = date;
@@ -247,7 +255,7 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
               ),
               SizedBox(height: 30),
               ActionButton(
-                selectColor: widget.selectColor,
+                selectColor: widget.sheetColor,
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     setState(() {
@@ -271,13 +279,13 @@ class CategoryAddBodyState extends State<CategoryAddBody> {
                     final Map<String, dynamic> icon = serializeIcon(selectedIcon!);
                     final String title = titleController.text;
                     final String? note = noteController.text.isEmpty?null: noteController.text;
-                    final int color = widget.selectColor.toARGB32();
+                    final int color = widget.sheetColor.toARGB32();
                     widget.categoryCubit.addCategory(widget.uid,title,color,icon,selectedDeadline,note,);
                     Navigator.of(context).pop();
                   }
                 },
-                title: "Save",
-                iconData: Icons.save_outlined,
+                title:widget.editMode?"Save":"Create",
+                iconData:widget.editMode?Icons.save_outlined:Icons.add,
                 buttonAlignment: Alignment.center,
               ),
               SizedBox(height: 30),

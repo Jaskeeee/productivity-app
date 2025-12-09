@@ -56,6 +56,7 @@ dependencies:
   dotted_decoration: ^2.0.0
   dotted_line: ^3.2.3
   implicitly_animated_reorderable_list_2: ^0.6.0
+  card_stack_widget: ^0.1.6
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +103,20 @@ flutter:
         - asset: assets/fonts/ibm-plex-mono/IBMPlexMono-SemiBoldItalic.ttf
         - asset: assets/fonts/ibm-plex-mono/IBMPlexMono-Thin.ttf
         - asset: assets/fonts/ibm-plex-mono/IBMPlexMono-ThinItalic.ttf
+    - family: SpaceGrotesk
+      fonts:
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-Bold.ttf
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-Light.ttf
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-Medium.ttf
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-Regular.ttf
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-SemiBold.ttf
+       - asset: assets/fonts/space-grotesk/SpaceGrotesk-VariableFont_wght.ttf
+    - family: Cardot
+      fonts:
+       - asset: assets/fonts/cardot/Cardot-lxq6q.ttf
+    - family: LeniaMono
+      fonts:
+       - asset: assets/fonts/lenia-mono/Lenia-Mono-DEMO-BF6829227a1d000.ttf
 
 
 

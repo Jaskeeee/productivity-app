@@ -1,9 +1,9 @@
-import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productivity_app/core/ui/loading_animation.dart';
 import 'package:productivity_app/core/ui/widgets/profile_avatar.dart';
 import 'package:productivity_app/features/auth/domain/model/app_user.dart';
+import 'package:productivity_app/features/profile/presentation/components/profile_info_tile.dart';
 import 'package:productivity_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:productivity_app/features/profile/presentation/cubit/profile_states.dart';
 
@@ -40,28 +40,44 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Container(
                     padding: EdgeInsets.all(10),
-                    decoration: DottedDecoration(
-                      shape: Shape.box,
+                    decoration:BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(15)
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ProfileAvatar(photoUrl: state.profile!.photoUrl),
-                        SizedBox(
-                          width: 200,
-                          child: Text(
-                            "Hello ${state.profile!.name}!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.inversePrimary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600
+                        SizedBox(width:25,),
+                        Expanded(
+                          child: SizedBox(
+                            child: Text(
+                              "${state.profile!.name}!",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.inversePrimary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600
+                              ),
                             ),
                           ),
                         )
                       ],
                     )
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                    child: Column(
+                      children: [
+                        ProfileInfoTile(title:"Name", value:state.profile!.name),
+                        ProfileInfoTile(title:"Email", value:state.profile!.email),
+                      ],
+                    ),
                   )
                 ],
               ),

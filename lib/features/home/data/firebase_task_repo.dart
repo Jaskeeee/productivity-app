@@ -36,6 +36,7 @@ class FirebaseTaskRepo implements TaskRepo{
       id: docRef.id, 
       title: title, 
       occurrence: occurrence ?? "none", 
+      isCompleted: false,
       createdAt: createdAt,
       deadline: deadline 
       );
@@ -53,6 +54,7 @@ class FirebaseTaskRepo implements TaskRepo{
       final TaskModel taskModel = TaskModel(
         id: taskData["id"], 
         title: taskData["title"], 
+        isCompleted: taskData["isCompleted"],
         occurrence: occurrence ?? taskData["occurrence"], 
         createdAt: taskData["createdAt"],
         deadline: deadline ?? (taskData["deadline"]!=null ?(taskData["deadline"] as Timestamp).toDate():null)

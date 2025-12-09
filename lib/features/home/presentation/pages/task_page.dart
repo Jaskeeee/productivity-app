@@ -162,7 +162,8 @@ class _TaskPageState extends State<TaskPage> with RouteAware{
                               onChanged: (value){
                                 setState((){
                                   updatedIds.add(taskModel.id);
-                                  taskModel.isCompleted = value!;
+                                  final TaskModel updatedModel = taskModel.copyWith(isCompleted:value);
+                                  localTask[index]=updatedModel;
                                 });
                               }
                             ),
@@ -175,8 +176,9 @@ class _TaskPageState extends State<TaskPage> with RouteAware{
                           isCompleted: taskModel.isCompleted, 
                           onChanged: (value){
                             setState((){
+                              final TaskModel updatedModel = taskModel.copyWith(isCompleted: value);
                               updatedIds.add(taskModel.id);
-                              taskModel.isCompleted = value!;
+                              localTask[index]=updatedModel;
                             });
                           }
                         );

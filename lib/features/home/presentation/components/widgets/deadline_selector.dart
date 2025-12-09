@@ -23,8 +23,7 @@ class DeadlineSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color iconColor = handleDefaultValueColor(selectColor);
-    final Color dateTextColor = handleDefaultValueColor(selectColor);
+    final Color elementColor = handleLuminance(selectColor);
     return Row(
       mainAxisAlignment: deadlineSelected
         ? MainAxisAlignment.spaceBetween
@@ -46,7 +45,7 @@ class DeadlineSelector extends StatelessWidget {
               Text(
                 "${selectedDeadline!.day} ${monthAbbreviations[selectedDeadline!.month]},${selectedDeadline!.year}",
                 style: TextStyle(
-                  color: dateTextColor,
+                  color:elementColor ,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -55,7 +54,7 @@ class DeadlineSelector extends StatelessWidget {
                 onPressed: deleteDeadline,
                 icon: Icon(
                   Icons.delete_outline_outlined,
-                  color:iconColor,
+                  color:elementColor,
                   size: 25,
                 ),
               ),

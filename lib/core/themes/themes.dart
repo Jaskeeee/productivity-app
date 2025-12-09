@@ -11,9 +11,9 @@ final ThemeData darkTheme = ThemeData(
     inversePrimary: Colors.white,
     error: Colors.red,
   ),
-  fontFamily: 'IBMPlexMono',
+  fontFamily: 'LeniaMono',
   listTileTheme: ListTileThemeData(
-    titleTextStyle: TextStyle(fontFamily: "IBMPlexMono"),
+    titleTextStyle: TextStyle(fontFamily: "LeniaMono"),
   ),
 );
 
